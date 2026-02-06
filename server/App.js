@@ -17,7 +17,6 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
-// Routers (same style as your screenshot)
 app.use("/userapi", userRouter);
 app.use("/adminapi", adminRouter);
 
