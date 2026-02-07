@@ -1,5 +1,5 @@
 import express from "express";
-import { Addcategory, loginadmin } from "../controller/AdminController.js";
+import { Addcategory, deletecategory, getallcategory, getsinglecategory, loginadmin, updatecategory } from "../controller/AdminController.js";
 import Userauth from "../middleware/Userauth.js";
 import Upload from "../middleware/Upload.js";
 
@@ -13,7 +13,17 @@ router.post("/adminlogin", loginadmin);
 
 
 // localhost:3000/adminapi/addcategory
-
 router.post("/addcategory",Userauth("admin"),uploadcategory.single('category_image') ,Addcategory);
+// localhost:3000/adminapi/getallcategory
+router.get("/getallcategory",Userauth("admin"),getallcategory);
+
+// localhost:3000/adminapi/getsinglecategory
+router.get("/getsinglecategory/:id",Userauth("admin"),getsinglecategory);
+
+// localhost:3000/adminapi/deletecategory
+router.post("/deletecategory/:id",Userauth("admin"),deletecategory);
+
+// localhost:3000/adminapi/updatecategory
+router.post("/updatecategory/:id",uploadcategory.single('category_image'),Userauth("admin"),updatecategory);
 
 export default router;
