@@ -3,6 +3,8 @@ import jwt from "jsonwebtoken";
 import Admin from "../model/Admin.js";
 import { Category } from "../model/Catagory.js";
 import cloudinary from "../Config/cloudinary.js";
+import Product from "../model/Product.js";
+import ProductImage from "../model/Productimage.js";
 
 export const loginadmin = async (req, res) => {
   const admin_email = req.body.admin_email;
@@ -126,12 +128,50 @@ export const deletecategory =async (req, res) => {
             updateData,
             { new: true }
         );
-        
+       
         res.json({ msg: "Category updated successfully", category: updatedCategory });
     } catch (error) {
         res.json({ msg: "Error in updating category", error: error.message });
     }
  }
 
+ export const addproduct = async (req, res) => {
+  const   product_name= req.body.product_name;
+  const Product_Category = req.body.Product_Category;
+  const Product_description = req.body.Product_description;
+  const Product_price = req.body.Product_price;
+  // const product_images = req.files.map(file => file.path);
+
+  try {
+    if (!req.files||req.files.length===0) {
+      return res.json({ msg: "At least one product image is required" });
+      
+    }
+    const mainImage = req.files[0].path;
+    const newProduct = new Product({ 
+       product_name,
+       Product_description,
+       Product_price,
+       Product_image: mainImage,
+       Product_Category,
+
+    
+    })
+    const savedProduct = await newProduct.save();
+    const imagedocs =req.files.map(file => ({
+      product: savedProduct._id,
+      image: file.path,
+    }));
+
+    await ProductImage.insertMany(imagedocs);
+    res.json({ msg: "Product added successfully", product: savedProduct });
+    
+
+
+  } catch (error) {
+    res.json({ msg: "Error in adding product", error: error.message });
+    
+  }
+ }
 
 

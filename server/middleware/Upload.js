@@ -7,7 +7,7 @@ function Upload(foldername) {
     cloudinary: cloudinary,
     params: {
       folder: `E-commerce/${foldername}`,
-      allowed_formats: ["jpg", "jpeg", "png"],
+      allowed_formats: ["jpg", "jpeg", "png","webp"],
       transformation: [{ 
         width: 500,
          height: 500,
