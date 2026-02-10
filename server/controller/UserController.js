@@ -62,9 +62,8 @@ export const reguser = async (req, res) => {
 //   }
 // }
 
-export const Login =async(req,res)=>{
-  const email = req.body.lemail;
-  const password = req.body.lpassword;
+export const Login = async (req, res) => {
+  const { email, password } = req.body;
 
   try{
     const user = await User.findOne({U_email:email});
