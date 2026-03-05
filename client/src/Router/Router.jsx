@@ -4,6 +4,8 @@ import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom'
 import UserReg from '../Pages/UserReg'
 import RegLayout from '../Layout/RegLayout'
 import Home from '../Pages/Home'
+import Product from '../Pages/Product'
+import MainLayout from '../Layout/MainLayout'
 import { Provider } from 'react-redux'
 import { store } from '../Redux/store'
 
@@ -29,8 +31,11 @@ const AppRoutes = () => {
         {!isloggin && <Route index element={<UserReg />} />}
       </Route>
 
-      {/* Protected home route */}
-      <Route path='/home' element={isloggin ? <Home /> : <Navigate to='/' replace />} />
+      {/* Protected routes — Nav always visible via MainLayout */}
+      <Route element={isloggin ? <MainLayout /> : <Navigate to='/' replace />}>
+        <Route path='/home' element={<Home />} />
+        <Route path='/product' element={<Product />} />
+      </Route>
     </Routes>
   )
 }

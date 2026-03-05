@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { ShoppingCart, Search, User } from 'lucide-react'
+import { ShoppingCart, Search, User, List } from 'lucide-react'
 import { logout } from '../Redux/slice'
 
 const Nav = () => {
@@ -15,72 +15,61 @@ const Nav = () => {
   }
 
   return (
-    <nav className="w-full bg-white shadow-md px-6 py-4 flex items-center justify-between">
+    <nav className="fixed top-0 left-0 w-full h-[52px] bg-gradient-to-r from-[#f0f4f9] via-white to-[#e8eff5] shadow-sm border-b border-gray-200 px-6 md:px-12 flex items-center justify-between z-40">
 
       {/* Logo */}
-      <div className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-blue-500 bg-clip-text text-transparent">
-        NexaCart
+      <div
+        className="flex items-center gap-2 cursor-pointer"
+        onClick={() => navigate('/home')}
+      >
+        <ShoppingCart className="text-blue-500" strokeWidth={2.5} size={24} />
+        <span className="text-xl font-bold text-slate-800 tracking-tight">
+          NexaCart
+        </span>
       </div>
-          {/* Home, About, Contact Buttons */}
-        <div className="hidden md:flex items-center gap-6 mr-2">
-          <button className="text-gray-700 hover:text-purple-600 font-medium transition-colors">
-            Home
-          </button>
-          <button className="text-gray-700 hover:text-purple-600 font-medium transition-colors">
-            About
-          </button>
-          <button className="text-gray-700 hover:text-purple-600 font-medium transition-colors">
-            Contact
-          </button>
-        </div>
 
-      {/* Search Bar */}
-      <div className="hidden md:flex items-center w-1/4 bg-gray-100 rounded-full px-2 py-2">
-        <Search size={18} className="text-gray-500" />
-        <input
-          type="text"
-          placeholder="Search AI Products..."
-          className="bg-transparent outline-none w-full px-2 text-sm"
-        />
+      {/* Links */}
+      <div className="hidden md:flex items-center gap-8">
+        <button
+          onClick={() => navigate('/home')}
+          className="text-gray-500 hover:text-slate-900 font-medium text-sm transition-colors"
+        >
+          Home
+        </button>
+        <button
+          onClick={() => navigate('/product')}
+          className="text-gray-500 hover:text-slate-900 font-medium text-sm transition-colors"
+        >
+          Shop
+        </button>
+        <button className="text-gray-500 hover:text-slate-900 font-medium text-sm transition-colors">
+          About
+        </button>
+        <button className="text-gray-500 hover:text-slate-900 font-medium text-sm transition-colors">
+          Contact
+        </button>
       </div>
 
       {/* Right Section */}
       <div className="flex items-center gap-6">
+        <button className="text-gray-600 hover:text-slate-900 transition-colors">
+          <Search size={20} strokeWidth={2} />
+        </button>
 
-    
+        <button
+          onClick={user ? handleLogout : null}
+          title={user ? `Logout ${user.name || user.username || ''}` : "User Profile"}
+          className="text-gray-600 hover:text-slate-900 transition-colors"
+        >
+          <span>Logout</span>
+          <User size={20} strokeWidth={2} />
+        </button>
 
-        {/* Cart */}
-        <div className="relative cursor-pointer">
-          <ShoppingCart className="text-gray-700" />
-          <span className="absolute -top-2 -right-2 bg-purple-600 text-white text-xs px-2 py-0.5 rounded-full">
-            2
-          </span>
-        </div>
-
-        {/* User Section */}
-        <div className="flex items-center gap-2 cursor-pointer">
-          <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center text-white">
-            <User size={16} />
-          </div>
-          <span className="text-sm font-medium text-gray-700">
-            {(
-              user?.name ||
-              user?.username ||
-              (user?.email && user.email.split('@')[0]) ||
-              'Guest'
-            )}
-          </span>
-          {user && (
-            <button
-              onClick={handleLogout}
-              className="ml-3 text-sm text-indigo-600 hover:underline"
-            >
-              Logout
-            </button>
-          )}
-        </div>
-
+        <button className="text-gray-600 hover:text-slate-900 transition-colors relative">
+          <List size={20} strokeWidth={2} />
+        </button>
       </div>
+
     </nav>
   )
 }

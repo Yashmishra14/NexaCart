@@ -3,11 +3,13 @@ configDotenv();
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import User from "../model/User.js";
+import Productmodel from "../model/Product.js";
+import Cart from "../model/Cart.js";
 
 
 export const reguser = async (req, res) => {
   try {
-        // console.log("REQ BODY 👉", req.body);
+    // console.log("REQ BODY 👉", req.body);
 
     const { name, email, password } = req.body;
 
@@ -38,7 +40,7 @@ export const reguser = async (req, res) => {
 //      const user = await User.findOne({ U_email: email })
 //      if (!user) {
 //       res.json({ message1: "User not found" });
-      
+
 //      } else {
 //       const ispasswordmatch=await bcrypt.compare(password,user.U_password)
 //       if(!ispasswordmatch){
@@ -55,7 +57,7 @@ export const reguser = async (req, res) => {
 //         }
 
 //       }
-      
+
 //      }
 //   }catch(err){
 //     console.error("Login Error:", err);
@@ -65,12 +67,12 @@ export const reguser = async (req, res) => {
 export const Login = async (req, res) => {
   const { email, password } = req.body;
 
-  try{
-    const user = await User.findOne({U_email:email});
-    if(!user){
-      res.json({message1:"User not found"});
-    }else{
-      const isMatch = await bcrypt.compare(password,user.U_password);
+  try {
+    const user = await User.findOne({ U_email: email });
+    if (!user) {
+      res.json({ message1: "User not found" });
+    } else {
+      const isMatch = await bcrypt.compare(password, user.U_password);
 
       if (!isMatch) {
         res.json({ message2: "Invalid password" });
@@ -79,21 +81,48 @@ export const Login = async (req, res) => {
           {
             id: user._id,
             email: user.U_email,
-            role:"user"
+            role: "user"
           },
           process.env.JWT_SECRET,
           { expiresIn: "1h" }
         )
-        res.json({ message3: "Login successful", "token":token });
-        
+        res.json({ message3: "Login successful", "token": token });
+
       }
     }
-  }catch(err){
+  } catch (err) {
     console.error("Login Error:", err);
     res.status(500).json({ message: "Server error" });
   }
 }
 
-export const test=(req,res)=>{
-  res.json({message:"Auth is working"});
+export const addtocart = async (req, res) => {
+  try {
+    const { User_id, Product_id, product_qty } = req.body;
+    const cart = new Cart({
+      User_id,
+      Product_id,
+      product_qty
+    });
+    const savedCart = await cart.save();
+    res.json({ message: "Cart added successfully", cart: savedCart });
+  } catch (error) {
+    res.json({ message: error.message });
+  }
+}
+
+
+export const allproduct = async (req, res) => {
+  try {
+    const product = await Productmodel.find()
+    res.json({ message: "All products", product })
+
+  } catch (error) {
+    res.json({ message: error.message });
+
+  }
+}
+
+export const test = (req, res) => {
+  res.json({ message: "Auth is working" });
 }

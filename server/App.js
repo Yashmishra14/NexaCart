@@ -7,8 +7,7 @@ import bcrypt from "bcryptjs";
 import mongoose from "mongoose";
 import "./Db/db.js";
 
-// import userRouter from "./router/UserRouter.js";
-import userRouter from "./router/Userrouter.js";
+import userRouter from "./router/UserRouter.js";
 import adminRouter from "./router/AdminRouter.js";
 import AdminModel from "./model/Admin.js";
 
